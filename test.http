@@ -1,0 +1,388 @@
+###
+# SISMAN API Test Examples
+# Bu dosya REST Client eklentisi ile kullanılabilir (VS Code, IntelliJ vb.)
+###
+
+# Ortam değişkenlerini tanımla (en başta tanımlanmalı)
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGVzIjpbImFkbWluIiwidXNlciJdLCJleHAiOjE3NDMzMzc5ODYsImlhdCI6MTc0MzI1MTU4Nn0.eZO28am5Fc3Gv1LroPBDuwwTduiGMoV4HJBYMAG5wc8
+@baseUrl = http://localhost:8080/api/v1/sisman
+
+### Sistem Bilgileri ve Sağlık Kontrolü ###
+
+# Sistem sağlık kontrolü - kimlik doğrulama gerektirmez
+GET http://localhost:8080/api/v1/sisman/system/health
+
+### 
+# Detaylı sistem bilgisi - yönetici erişimi gerektirir
+GET http://localhost:8080/api/v1/sisman/system/info
+Authorization: Bearer {{authToken}}
+
+### Kimlik Doğrulama ###
+
+# Kullanıcı girişi
+POST http://localhost:8080/api/v1/sisman/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "Admin123!"
+}
+
+### 
+# Token yenileme
+POST http://localhost:8080/api/v1/sisman/auth/refresh
+Content-Type: application/json
+
+{
+  "token": "{{authToken}}"
+}
+
+### Kullanıcı Yönetimi ###
+
+# Tüm kullanıcıları listele
+GET http://localhost:8080/api/v1/sisman/user
+Authorization: Bearer {{authToken}}
+
+###
+# Belirli bir kullanıcıyı görüntüle
+GET http://localhost:8080/api/v1/sisman/user/1
+Authorization: Bearer {{authToken}}
+
+###
+# Yeni kullanıcı oluştur
+POST http://localhost:8080/api/v1/sisman/user
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "username": "yenikullanici",
+  "password": "Sifre123!",
+  "email": "yeni@ornek.com",
+  "firstName": "Yeni",
+  "lastName": "Kullanıcı",
+  "roles": ["user"]
+}
+
+###
+# Kullanıcı güncelle
+PUT http://localhost:8080/api/v1/sisman/user/2
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "firstName": "Güncellenmiş",
+  "lastName": "Kullanıcı",
+  "email": "guncellenmis@ornek.com",
+  "active": true,
+  "roles": ["admin", "user"]
+}
+
+###
+# Kullanıcı sil
+DELETE http://localhost:8080/api/v1/sisman/user/3
+Authorization: Bearer {{authToken}}
+
+###
+# Kullanıcı aktivitelerini görüntüle
+GET http://localhost:8080/api/v1/sisman/user/1/activities
+Authorization: Bearer {{authToken}}
+
+### Aktivite Kaydı Yönetimi ###
+
+# Tüm aktiviteleri listele
+GET http://localhost:8080/api/v1/sisman/activity
+Authorization: Bearer {{authToken}}
+
+###
+# Aktiviteleri sayfalama ile listele
+GET http://localhost:8080/api/v1/sisman/activity?limit=20&offset=0
+Authorization: Bearer {{authToken}}
+
+###
+# Belirli bir tipteki aktiviteleri listele
+GET http://localhost:8080/api/v1/sisman/activity/type/user_login
+Authorization: Bearer {{authToken}}
+
+###
+# Aktivitelerde arama yap
+GET http://localhost:8080/api/v1/sisman/activity/search?q=nginx
+Authorization: Bearer {{authToken}}
+
+###
+# Eski aktiviteleri temizle
+DELETE http://localhost:8080/api/v1/sisman/activity/cleanup?days=30
+Authorization: Bearer {{authToken}}
+
+### Servis İzleme ###
+
+# Tüm servisleri listele
+GET http://localhost:8080/api/v1/sisman/service
+Authorization: Bearer {{authToken}}
+
+###
+# Belirli bir servisi görüntüle
+GET http://localhost:8080/api/v1/sisman/service/1
+Authorization: Bearer {{authToken}}
+
+###
+# Servis metrikleri görüntüle
+GET http://localhost:8080/api/v1/sisman/service/1/metrics
+Authorization: Bearer {{authToken}}
+
+###
+# Tarih aralığına göre servis metrikleri görüntüle
+GET http://localhost:8080/api/v1/sisman/service/1/metrics?start_time=2023-01-01T00:00:00Z&end_time=2023-12-31T23:59:59Z
+Authorization: Bearer {{authToken}}
+
+###
+# Yeni servis oluştur
+POST http://localhost:8080/api/v1/sisman/service
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "web-sunucu",
+  "description": "Web sunucusu",
+  "type": "nginx",
+  "config": "{\"port\": 80}",
+  "monitored": true
+}
+
+###
+# Servis güncelle
+PUT http://localhost:8080/api/v1/sisman/service/1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "description": "Güncellenmiş web sunucusu",
+  "monitored": false
+}
+
+###
+# Servis sil
+DELETE http://localhost:8080/api/v1/sisman/service/2
+Authorization: Bearer {{authToken}}
+
+### Komut Yönetimi ###
+
+# Tüm komutları listele
+GET http://localhost:8080/api/v1/sisman/command
+Authorization: Bearer {{authToken}}
+
+###
+# Etkinleştirilmiş komutları listele
+GET http://localhost:8080/api/v1/sisman/command?enabled=true
+Authorization: Bearer {{authToken}}
+
+###
+# Kategoriye göre komut listele
+GET http://localhost:8080/api/v1/sisman/command?category=system
+Authorization: Bearer {{authToken}}
+
+###
+# Belirli bir komutu görüntüle
+GET http://localhost:8080/api/v1/sisman/command/1
+Authorization: Bearer {{authToken}}
+
+###
+# Yeni komut oluştur
+POST http://localhost:8080/api/v1/sisman/command
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "diskUsage",
+  "description": "Disk kullanımı bilgisi gösterir",
+  "command": "df -h {{.path}}",
+  "category": "system",
+  "enabled": true,
+  "parameters": [
+    {
+      "name": "path",
+      "label": "Dizin Yolu",
+      "type": "string",
+      "required": true,
+      "defaultValue": "/",
+      "validation": "^/[a-zA-Z0-9/]*$",
+      "order": 1
+    }
+  ]
+}
+
+###
+# Komut güncelle
+PUT http://localhost:8080/api/v1/sisman/command/1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "description": "Güncellenmiş disk kullanımı komutu",
+  "enabled": false,
+  "parameters": [
+    {
+      "id": 1,
+      "name": "path",
+      "label": "Dizin Yolu",
+      "type": "string",
+      "required": true,
+      "defaultValue": "/home",
+      "validation": "^/[a-zA-Z0-9/]*$",
+      "order": 1
+    },
+    {
+      "name": "human",
+      "label": "İnsan Okunabilir Format",
+      "type": "boolean",
+      "required": false,
+      "defaultValue": "true",
+      "order": 2
+    }
+  ]
+}
+
+###
+# Komut sil
+DELETE http://localhost:8080/api/v1/sisman/command/2
+Authorization: Bearer {{authToken}}
+
+###
+# Komut çalıştır
+POST http://localhost:8080/api/v1/sisman/command/1/execute
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "parameters": {
+    "path": "/home"
+  }
+}
+
+### Nginx Yapılandırma Yönetimi ###
+
+# Tüm Nginx yapılandırmalarını listele
+GET http://localhost:8080/api/v1/sisman/nginx
+Authorization: Bearer {{authToken}}
+
+###
+# Belirli bir Nginx yapılandırmasını görüntüle
+GET http://localhost:8080/api/v1/sisman/nginx/1
+Authorization: Bearer {{authToken}}
+
+###
+# Yeni Nginx yapılandırması oluştur
+POST http://localhost:8080/api/v1/sisman/nginx
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "ornek-site",
+  "domain": "ornek.com",
+  "serverName": "ornek.com www.ornek.com",
+  "port": 80,
+  "sslEnabled": false,
+  "proxyPass": "http://localhost:3000",
+  "customConfig": "client_max_body_size 10M;\naccess_log /var/log/nginx/ornek.com.access.log;"
+}
+
+###
+# SSL ile Nginx yapılandırması oluştur
+POST http://localhost:8080/api/v1/sisman/nginx
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "guvenli-site",
+  "domain": "guvenli.com",
+  "serverName": "guvenli.com www.guvenli.com",
+  "port": 80,
+  "sslEnabled": true,
+  "certPath": "/etc/letsencrypt/live/guvenli.com/fullchain.pem",
+  "keyPath": "/etc/letsencrypt/live/guvenli.com/privkey.pem",
+  "rootPath": "/var/www/guvenli.com/html",
+  "customConfig": "client_max_body_size 10M;"
+}
+
+###
+# Nginx yapılandırmasını güncelle
+PUT http://localhost:8080/api/v1/sisman/nginx/1
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "domain": "yeni-ornek.com",
+  "serverName": "yeni-ornek.com www.yeni-ornek.com",
+  "proxyPass": "http://localhost:5000"
+}
+
+###
+# Nginx yapılandırmasını sil
+DELETE http://localhost:8080/api/v1/sisman/nginx/2
+Authorization: Bearer {{authToken}}
+
+###
+# Nginx yapılandırmasını uygula
+POST http://localhost:8080/api/v1/sisman/nginx/1/apply
+Authorization: Bearer {{authToken}}
+
+### Docker Konteyner Yönetimi ###
+
+# Tüm konteynerleri listele
+GET http://localhost:8080/api/v1/sisman/docker/containers
+Authorization: Bearer {{authToken}}
+
+###
+# İsme göre konteyner filtrele
+GET http://localhost:8080/api/v1/sisman/docker/containers?name=nginx
+Authorization: Bearer {{authToken}}
+
+###
+# İmaja göre konteyner filtrele
+GET http://localhost:8080/api/v1/sisman/docker/containers?image=postgres
+Authorization: Bearer {{authToken}}
+
+###
+# Belirli bir konteyneri görüntüle
+GET http://localhost:8080/api/v1/sisman/docker/containers/abc123
+Authorization: Bearer {{authToken}}
+
+###
+# Konteyner başlat
+POST http://localhost:8080/api/v1/sisman/docker/containers/abc123/start
+Authorization: Bearer {{authToken}}
+
+###
+# Konteyner durdur
+POST http://localhost:8080/api/v1/sisman/docker/containers/abc123/stop
+Authorization: Bearer {{authToken}}
+
+###
+# Konteyner logları
+GET http://localhost:8080/api/v1/sisman/docker/containers/abc123/logs
+Authorization: Bearer {{authToken}}
+
+###
+# Son 50 satır log görüntüle
+GET http://localhost:8080/api/v1/sisman/docker/containers/abc123/logs?tail=50
+Authorization: Bearer {{authToken}}
+
+###
+# Konteyner istatistikleri
+GET http://localhost:8080/api/v1/sisman/docker/containers/abc123/stats
+Authorization: Bearer {{authToken}}
+
+###
+# Tüm Docker imajlarını listele
+GET http://localhost:8080/api/v1/sisman/docker/images
+Authorization: Bearer {{authToken}}
+
+###
+# İmaj adına göre filtrele
+GET http://localhost:8080/api/v1/sisman/docker/images?name=postgis
+Authorization: Bearer {{authToken}}
+
+### Ortam Değişkenleri ve İpuçları ###
+# Ortam değişkenlerini tanımlamak için:
+
+# Not: Gerçek kullanımda "Authorization: Bearer {{authToken}}" kısmına REST Client eklentisi 
+# sayesinde giriş yaptıktan sonra alınan token otomatik olarak yerleştirilir.

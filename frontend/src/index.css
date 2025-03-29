@@ -1,0 +1,97 @@
+/* Import global styles */
+@import './styles/global.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Additional mobile-first styles */
+:root {
+    --scrollbar-track: #f1f1f1;
+    --scrollbar-thumb: #888;
+    --scrollbar-thumb-hover: #555;
+}
+
+/* Dark mode variables */
+.dark {
+    --scrollbar-track: #2d3748;
+    --scrollbar-thumb: #4a5568;
+    --scrollbar-thumb-hover: #718096;
+}
+
+/* Better scrollbar styling */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+}
+
+/* Mobile-first optimizations */
+html,
+body {
+    @apply h-full w-full m-0 p-0 antialiased;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    text-size-adjust: 100%;
+}
+
+/* Improve form elements on mobile */
+input,
+select,
+textarea,
+button {
+    @apply appearance-none;
+    font-size: 16px;
+    /* Prevents iOS zoom on focus */
+}
+
+/* Responsive table improvements */
+@media (max-width: 767px) {
+    .table-responsive {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* Fix for iOS input fields - border-radius: 0 kaldırıldı */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+textarea {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* border-radius: 0; - Bu satır kaldırıldı */
+}
+
+/* Fix for mobile Safari padding issues */
+body {
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Add bottom padding for elements that appear at the bottom of the screen on mobile */
+.safe-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* Utility classes for better mobile interaction */
+.touch-target {
+    min-height: 44px;
+    min-width: 44px;
+}

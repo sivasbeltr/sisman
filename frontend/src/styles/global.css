@@ -1,0 +1,88 @@
+/* Progress Bar Animations */
+@keyframes progress-bar-stripes {
+    from {
+        background-position: 1rem 0;
+    }
+
+    to {
+        background-position: 0 0;
+    }
+}
+
+@keyframes progress-indeterminate {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.animate-progress-indeterminate {
+    animation: progress-indeterminate 1.5s infinite cubic-bezier(0.65, 0.815, 0.735, 0.395);
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    background-color: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 0.25rem;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #2563eb;
+    border-color: #2563eb;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3E%3C/svg%3E");
+}
+
+input[type="checkbox"]:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+.tree.show-lines .tree-node {
+    position: relative;
+}
+
+.tree.show-lines .tree-node .tree-node-content {
+    position: relative;
+}
+
+.tree.show-lines .tree-node .tree-node-children {
+    position: relative;
+    margin-left: 1.5rem;
+    /* Düğüm içeriğiyle hizalamak için */
+}
+
+.tree.show-lines .tree-node:not(:last-child)>.tree-node-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: -0.5rem;
+    left: -0.75rem;
+    width: 1px;
+    background-color: var(--line-color, #E5E7EB);
+    /* Çizgi rengi */
+}
+
+.tree.show-lines .tree-node .tree-node-children .tree-node::before {
+    content: '';
+    position: absolute;
+    top: -0.5rem;
+    left: -0.75rem;
+    width: 0.75rem;
+    height: 1rem;
+    border-bottom: 1px solid var(--line-color, #E5E7EB);
+}
+
+.tree.show-lines .tree-node .tree-node-children .tree-node>.tree-node-content::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -0.75rem;
+    width: 0.75rem;
+    height: 1px;
+    background-color: var(--line-color, #E5E7EB);
+}

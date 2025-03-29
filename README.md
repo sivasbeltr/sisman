@@ -23,7 +23,7 @@ SISMAN, organizasyon içerisindeki uygulama servislerini gözlemlemek, güvenli 
    - Konteyner başlatma/durdurma işlemleri
    - Konteyner loglarını görüntüleme
    - Konteyner kaynak kullanım istatistikleri
-   - Görüntü yönetimi
+   - Image yönetimi
 
 5. **Kullanıcı Yönetimi**
    - Rol tabanlı erişim kontrolü

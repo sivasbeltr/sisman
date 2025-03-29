@@ -247,7 +247,7 @@ func (s *UserService) DeleteUser(id uint) error {
 	tx := s.db.Begin()
 
 	// Önce kullanıcı rollerini temizle (ilişkilendirmeleri kaldır)
-	if err := tx.Model(&models.User{Model: gorm.Model{ID: id}}).Association("Roles").Clear(); err != nil {
+	if err := tx.Model(&models.User{Model: models.Model{ID: id}}).Association("Roles").Clear(); err != nil {
 		tx.Rollback()
 		return err
 	}

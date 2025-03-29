@@ -60,8 +60,8 @@ func (s *ActivityService) GetAllActivities(limit, offset int) ([]models.Activity
 		return nil, 0, err
 	}
 
-	// Get paginated records with user information
-	if err := s.db.Preload("User").Order("created_at DESC").Limit(limit).Offset(offset).Find(&activities).Error; err != nil {
+	// Get paginated records
+	if err := s.db.Order("created_at DESC").Limit(limit).Offset(offset).Find(&activities).Error; err != nil {
 		return nil, 0, err
 	}
 
@@ -78,8 +78,8 @@ func (s *ActivityService) GetActivityByType(activityType string, limit, offset i
 		return nil, 0, err
 	}
 
-	// Get paginated records
-	if err := s.db.Preload("User").Where("activity_type = ?", activityType).Order("created_at DESC").Limit(limit).Offset(offset).Find(&activities).Error; err != nil {
+	// Get paginated records - removed Preload("User") since relation appears to be unsupported
+	if err := s.db.Where("activity_type = ?", activityType).Order("created_at DESC").Limit(limit).Offset(offset).Find(&activities).Error; err != nil {
 		return nil, 0, err
 	}
 
@@ -103,7 +103,7 @@ func (s *ActivityService) SearchActivities(query string, limit, offset int) ([]m
 	}
 
 	// Get paginated records
-	if err := s.db.Preload("User").Where("description LIKE ?", "%"+query+"%").Order("created_at DESC").Limit(limit).Offset(offset).Find(&activities).Error; err != nil {
+	if err := s.db.Where("description LIKE ?", "%"+query+"%").Order("created_at DESC").Limit(limit).Offset(offset).Find(&activities).Error; err != nil {
 		return nil, 0, err
 	}
 

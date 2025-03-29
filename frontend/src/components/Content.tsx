@@ -9,7 +9,7 @@ import {
 interface StatusCardProps {
     title: string;
     count: number;
-    icon: JSX.Element;
+    icon: React.JSX.Element;
     color: string;
 }
 

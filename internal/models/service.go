@@ -1,29 +1,27 @@
 package models
 
-import "gorm.io/gorm"
-
 // Service represents a monitored system service
 type Service struct {
-	gorm.Model
-	Name        string `gorm:"uniqueIndex;not null"`
-	Description string
-	Type        string          // systemd, docker, etc.
-	Status      string          // running, stopped, etc.
-	Monitored   bool            `gorm:"default:true"`
-	Metrics     []ServiceMetric `gorm:"foreignKey:ServiceID"`
-	Config      string          // Service configuration (JSON)
+	Model
+	Name        string          `gorm:"uniqueIndex;not null" json:"name"`
+	Description string          `json:"description,omitempty"`
+	Type        string          `json:"type"`   // systemd, docker, etc.
+	Status      string          `json:"status"` // running, stopped, etc.
+	Monitored   bool            `gorm:"default:true" json:"monitored"`
+	Metrics     []ServiceMetric `gorm:"foreignKey:ServiceID" json:"metrics"`
+	Config      string          `json:"config,omitempty"` // Service configuration (JSON)
 }
 
 // ServiceMetric represents a point-in-time metric for a service
 type ServiceMetric struct {
-	gorm.Model
-	ServiceID    uint    `gorm:"index"`
-	Timestamp    int64   `gorm:"index"`
-	CPUUsage     float64 // Percentage
-	MemoryUsage  float64 // MB
-	DiskUsage    float64 // MB
-	NetworkIn    float64 // MB
-	NetworkOut   float64 // MB
-	ResponseTime float64 // ms
-	Status       string  // running, stopped, error, etc.
+	Model
+	ServiceID    uint    `gorm:"index" json:"serviceId"`
+	Timestamp    int64   `gorm:"index" json:"timestamp"` // Unix timestamp
+	CPUUsage     float64 `json:"cpuUsage"`               // Percentage
+	MemoryUsage  float64 `json:"memoryUsage"`            // MB
+	DiskUsage    float64 `json:"diskUsage"`              // MB
+	NetworkIn    float64 `json:"networkIn"`              // MB
+	NetworkOut   float64 `json:"networkOut"`             // MB
+	ResponseTime float64 `json:"responseTime"`           // ms
+	Status       string  `json:"status"`                 // running, stopped, error, etc.
 }

@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/template/html/v2"
 	"github.com/sivasbeltr/sisman/internal/auth"
 	"github.com/sivasbeltr/sisman/internal/config"
 	"github.com/sivasbeltr/sisman/internal/database"
@@ -43,13 +44,24 @@ func main() {
 		log.Fatalf("SQL DB alınamadı: %v", err)
 	}
 
-	// Fiber uygulamasını oluştur
+	// HTML template motorunu ayarla
+	engine := html.New("./public", ".html")
+	engine.Reload(true) // Geliştirme modunda şablonları yeniden yükle
+	engine.Debug(true)  // Hata ayıklama modunu etkinleştir
 	app := fiber.New(fiber.Config{
 		AppName:      "SISMAN API",
 		ErrorHandler: router.ErrorHandler,
-		// Daha uzun işlemler için zaman aşımı sürelerini artır
 		ReadTimeout:  2 * time.Minute,
 		WriteTimeout: 2 * time.Minute,
+		Views:        engine,
+	})
+
+	// Statik dosyaları sun
+	app.Static("/static", "./public/static")
+
+	// Kök rotayı ayarla
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.Render("index", fiber.Map{})
 	})
 
 	// Rotaları ayarla

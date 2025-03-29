@@ -1,20 +1,18 @@
 package models
 
-import "gorm.io/gorm"
-
 // NginxConfig represents an nginx configuration
 type NginxConfig struct {
-	gorm.Model
-	Name         string `gorm:"uniqueIndex;not null"`
-	Domain       string `gorm:"index"`
-	ServerName   string
-	Port         int  `gorm:"default:80"`
-	SSLEnabled   bool `gorm:"default:false"`
-	CertPath     string
-	KeyPath      string
-	ProxyPass    string
-	RootPath     string
-	ConfigPath   string // Path to actual config file
-	Active       bool   `gorm:"default:true"`
-	CustomConfig string // Additional custom configuration
+	Model
+	Name         string `gorm:"uniqueIndex;not null" json:"name"`
+	Domain       string `gorm:"index" json:"domain,omitempty"`
+	ServerName   string `json:"serverName,omitempty"`
+	Port         int    `gorm:"default:80" json:"port"`
+	SSLEnabled   bool   `gorm:"default:false" json:"sslEnabled"`
+	CertPath     string `json:"certPath,omitempty"`
+	KeyPath      string `json:"keyPath,omitempty"`
+	ProxyPass    string `json:"proxyPass,omitempty"`
+	RootPath     string `json:"rootPath,omitempty"`
+	ConfigPath   string `json:"configPath,omitempty"` // Path to actual config file
+	Active       bool   `gorm:"default:true" json:"active"`
+	CustomConfig string `json:"customConfig,omitempty"` // Additional custom configuration
 }

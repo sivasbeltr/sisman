@@ -4,7 +4,7 @@
 ###
 
 # Ortam değişkenlerini tanımla (en başta tanımlanmalı)
-@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGVzIjpbImFkbWluIiwidXNlciJdLCJleHAiOjE3NDMzMzc5ODYsImlhdCI6MTc0MzI1MTU4Nn0.eZO28am5Fc3Gv1LroPBDuwwTduiGMoV4HJBYMAG5wc8
+@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGVzIjpbImFkbWluIiwidXNlciJdLCJleHAiOjE3NDMzNDI5MDYsImlhdCI6MTc0MzI1NjUwNn0.CCf6l3Z5CE2EyzaOwys1y4YZrbOAR9nN_QlBzR771cI
 @baseUrl = http://localhost:8080/api/v1/sisman
 
 ### Sistem Bilgileri ve Sağlık Kontrolü ###
@@ -105,12 +105,12 @@ Authorization: Bearer {{authToken}}
 
 ###
 # Aktivitelerde arama yap
-GET http://localhost:8080/api/v1/sisman/activity/search?q=nginx
+GET http://localhost:8080/api/v1/sisman/activity/search?q=login
 Authorization: Bearer {{authToken}}
 
 ###
 # Eski aktiviteleri temizle
-DELETE http://localhost:8080/api/v1/sisman/activity/cleanup?days=30
+DELETE  http://localhost:8080/api/v1/sisman/activity/cleanup?days=30
 Authorization: Bearer {{authToken}}
 
 ### Servis İzleme ###
@@ -254,7 +254,8 @@ Content-Type: application/json
 
 {
   "parameters": {
-    "path": "/home"
+    "path": "/home",
+    "human": true
   }
 }
 
